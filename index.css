@@ -1,0 +1,11 @@
+#biotac {
+  border: solid 1px red;
+  border-collapse:collapse;
+}
+#biotac td {
+  width: 25px;
+  height: 25px;
+  padding: 0px;
+  border: solid 1px black;
+  text-align: center;
+}
