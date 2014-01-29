@@ -85,7 +85,11 @@ function rgb(r, g, b){
   return ["rgb(",r,",",g,",",b,")"].join(""); //Joining array of strings
 }
 
-var MAX_VALUE = 2500
+var max_values = [];
+for (var i = 0; i < 20; i ++)
+{
+  max_values[i] = 0;
+}
 
 
 
@@ -94,14 +98,24 @@ function cell(n){
 }
 
 //Found on stack overflow
-function getColor(length)
+function getColor(length, max)
 {
-    var i = (length * 255 / MAX_VALUE);
+    var i = (length * 255 / max);
     var r = Math.round(Math.sin(0.024 * i + 0) * 127 + 128);
     var g = Math.round(Math.sin(0.024 * i + 2) * 127 + 128);
     var b = Math.round(Math.sin(0.024 * i + 4) * 127 + 128);
     return 'rgb(' + r + ',' + g + ',' + b + ')';
 }
+
+var scale = '<p>Scale (<-High Low->)</p>';
+scale += '<table style="border-collapse:collapse; height:100px; width=400px;"><tr id="scale">';
+for (var i = 0; i < 100; i++) {
+  scale += '<td style="background-color:'+getColor(i,100)+'"> </td>';
+};
+scale += '</tr></table>';
+$('body').append($(scale));
+
+
 var id = 1; 
 var val = 10;
 // example of how to set cell contents
@@ -116,7 +130,7 @@ var listener = new ROSLIB.Topic({
 });
 
 listener.subscribe(function(message) {
-  console.log('Received message on ' + listener.name + ': ' + message.bt_data[0].electrode_data + cell(0));
+  //console.log('Received message on ' + listener.name + ': ' + message.bt_data[0].electrode_data);
   //console.log(message.bt_data[0].electrode_data);
   var data = message.bt_data[0].electrode_data;
   /*$('#cell3').html(data[6]);
@@ -138,9 +152,16 @@ listener.subscribe(function(message) {
   $('#cell36').html(data[15]);
   $('#cell38').html(data[18]);
   $('#cell40').html(data[5]);*/
-  for (var i = 19 - 1; i >= 0; i--) {
-     cell(i).html(data[i]);
-     cell(i).css('background-color', getColor(data[i]));
+  for (var i = 0; i < 19; i++) {
+    if (i==0) {
+      console.log(i + ' : ' + max_values[i] + ' : ' + data[i]);
+    }
+    if (data[i] > max_values[i]) {
+      max_values[i] = data[i];
+    }
+    //console.log(i + ' : ' + max_values[i] + ' : ' + data[i]);
+    cell(i).html(data[i]);
+    cell(i).css('background-color', getColor(data[i], max_values[i]));
   };
   //listener.unsubscribe();
 });
