@@ -85,12 +85,29 @@ function rgb(r, g, b){
   return ["rgb(",r,",",g,",",b,")"].join(""); //Joining array of strings
 }
 
+var MAX_VALUE = 2500
+
+
+
+function cell(n){
+  return $('#c'+n);
+}
+
+//Found on stack overflow
+function getColor(length)
+{
+    var i = (length * 255 / MAX_VALUE);
+    var r = Math.round(Math.sin(0.024 * i + 0) * 127 + 128);
+    var g = Math.round(Math.sin(0.024 * i + 2) * 127 + 128);
+    var b = Math.round(Math.sin(0.024 * i + 4) * 127 + 128);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+}
 var id = 1; 
 var val = 10;
 // example of how to set cell contents
-$('#cell'+id).html(val.toString());
+//$('#cell'+id).html(val.toString());
 // example of how to set cell color
-$('#cell'+id).css('background-color',rgb(250,150,0));
+//$('#cell'+id).css('background-color',rgb(250,150,0));
 
 var listener = new ROSLIB.Topic({
   ros : ros,
@@ -99,10 +116,10 @@ var listener = new ROSLIB.Topic({
 });
 
 listener.subscribe(function(message) {
-  console.log('Received message on ' + listener.name + ': ' + message.bt_data[0].electrode_data);
+  console.log('Received message on ' + listener.name + ': ' + message.bt_data[0].electrode_data + cell(0));
   //console.log(message.bt_data[0].electrode_data);
   var data = message.bt_data[0].electrode_data;
-  $('#cell3').html(data[6]);
+  /*$('#cell3').html(data[6]);
   $('#cell7').html(data[8]);
   $('#cell9').html(data[7]);
   $('#cell11').html(data[10]);
@@ -120,7 +137,10 @@ listener.subscribe(function(message) {
   $('#cell34').html(data[4]);
   $('#cell36').html(data[15]);
   $('#cell38').html(data[18]);
-  $('#cell40').html(data[5]);
-
+  $('#cell40').html(data[5]);*/
+  for (var i = 19 - 1; i >= 0; i--) {
+     cell(i).html(data[i]);
+     cell(i).css('background-color', getColor(data[i]));
+  };
   //listener.unsubscribe();
 });
