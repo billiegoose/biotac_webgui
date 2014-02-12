@@ -101,10 +101,10 @@ function cell(n){
 function getColor(length, max)
 {
     var i = (length * 255 / max);
-    var r = Math.round(Math.sin(0.024 * i + 0) * 127 + 128);
-    var g = Math.round(Math.sin(0.024 * i + 2) * 127 + 128);
-    var b = Math.round(Math.sin(0.024 * i + 4) * 127 + 128);
-    return 'rgb(' + r + ',' + g + ',' + b + ')';
+    var r = Math.round(Math.sin(0.014 * i + 2) * 127 + 128);
+    var g = Math.round(Math.sin(0.014 * i + 4) * 127 + 128);
+    //var b = Math.round(Math.sin(0.024 * i + 0) * 127 + 128);
+    return 'rgb(' + r + ',' + g + ',' + 128 + ')';
 }
 
 var scale = '<p>Scale (<-High Low->)</p>';
