@@ -86,11 +86,16 @@ function rgb(r, g, b){
 }
 
 var max_values = [];
+var nailUp = true;
 for (var i = 0; i < 20; i ++)
 {
   max_values[i] = 0;
 }
 
+$("flip_gui").on ("click", function() {
+  nailUp = !nailUp;
+  console.log('nailUp: ' + nailUp);
+});
 
 
 function cell(n){
@@ -133,35 +138,81 @@ listener.subscribe(function(message) {
   //console.log('Received message on ' + listener.name + ': ' + message.bt_data[0].electrode_data);
   //console.log(message.bt_data[0].electrode_data);
   var data = message.bt_data[0].electrode_data;
-  /*$('#cell3').html(data[6]);
-  $('#cell7').html(data[8]);
-  $('#cell9').html(data[7]);
-  $('#cell11').html(data[10]);
-  $('#cell13').html(data[9]);
-  $('#cell15').html(data[0]);
-  $('#cell17').html(data[11]);
-  $('#cell18').html(data[16]);
-  $('#cell19').html(data[1]);
-  $('#cell22').html(data[12]);
-  $('#cell24').html(data[2]);
-  $('#cell26').html(data[13]);
-  $('#cell30').html(data[3]);
-  $('#cell32').html(data[14]);
-  $('#cell33').html(data[17]);
-  $('#cell34').html(data[4]);
-  $('#cell36').html(data[15]);
-  $('#cell38').html(data[18]);
-  $('#cell40').html(data[5]);*/
+
   for (var i = 0; i < 19; i++) {
     if (i==0) {
-      console.log(i + ' : ' + max_values[i] + ' : ' + data[i]);
+      //console.log(i + ' : ' + max_values[i] + ' : ' + data[i]);
     }
     if (data[i] > max_values[i]) {
       max_values[i] = data[i];
     }
     //console.log(i + ' : ' + max_values[i] + ' : ' + data[i]);
-    cell(i).html(data[i]);
+    if(!nailUp)
+    {
+      cell(i).html(data[i]);
+    } 
+    else
+    {
+      if(i == 8)
+      {
+        cell(i).html(data[7]);
+      }
+      if(i == 7)
+      {
+        cell(i).html(data[8]);
+      }
+      if(i == 1)
+      {
+        cell(i).html(data[11]);
+      }
+      if(i == 2)
+      {
+        cell(i).html(data[12]);
+      }
+      if(i == 3)
+      {
+        cell(i).html(data[13]);
+      }
+      if(i == 4)
+      {
+        cell(i).html(data[14]);
+      }
+      if(i == 5)
+      {
+        cell(i).html(data[15]);
+      }
+      if(i == 6)
+      {
+        cell(i).html(data[16]);
+      }
+      if(i == 11)
+      {
+        cell(i).html(data[1]);
+      }
+      if(i == 12)
+      {
+        cell(i).html(data[2]);
+      }
+      if(i == 13)
+      {
+        cell(i).html(data[3]);
+      }
+      if(i == 14)
+      {
+        cell(i).html(data[4]);
+      }
+      if(i == 15)
+      {
+        cell(i).html(data[5]);
+      }
+      if(i == 16)
+      {
+        cell(i).html(data[6]);
+      }
+
+    }
     cell(i).css('background-color', getColor(data[i], max_values[i]));
   };
+
   //listener.unsubscribe();
 });
